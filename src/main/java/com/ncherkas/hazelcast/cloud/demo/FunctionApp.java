@@ -4,6 +4,9 @@ import com.amazonaws.services.lambda.AWSLambdaClientBuilder;
 import com.amazonaws.services.lambda.invoke.LambdaInvokerFactory;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.spi.impl.discovery.HazelcastCloudDiscovery;
@@ -30,6 +33,7 @@ public class FunctionApp {
 		config.setProperty("hazelcast.client.statistics.enabled", "true");
 		config.setProperty(ClientProperty.HAZELCAST_CLOUD_DISCOVERY_TOKEN.getName(), hazelcastCloudProps.getDiscoveryToken());
 		config.setProperty(HazelcastCloudDiscovery.CLOUD_URL_BASE_PROPERTY.getName(), hazelcastCloudProps.getUrlBase());
+		config.setProperty("hazelcast.client.heartbeat.timeout", "300000");
 		return HazelcastClient.newHazelcastClient(config);
 	}
 
@@ -46,6 +50,15 @@ public class FunctionApp {
 	@Bean
 	public AmazonS3 amazonS3() {
 		return AmazonS3ClientBuilder.defaultClient();
+	}
+
+	@Bean
+	public ObjectMapper objectMapper() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		JavaTimeModule module = new JavaTimeModule();
+		objectMapper.registerModule(module);
+		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		return objectMapper;
 	}
 
 	@Bean

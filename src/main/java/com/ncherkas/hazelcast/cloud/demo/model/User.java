@@ -1,17 +1,18 @@
 package com.ncherkas.hazelcast.cloud.demo.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 public class User implements Serializable {
 
     private int userId;
     private String lastCardUsePlace;
-    private long lastCardUseTimestamp;
+    private Instant lastCardUseTimestamp;
 
     public User() {
     }
 
-    public User(int userId, String lastCardUsePlace, long lastCardUseTimestamp) {
+    public User(int userId, String lastCardUsePlace, Instant lastCardUseTimestamp) {
         this.userId = userId;
         this.lastCardUsePlace = lastCardUsePlace;
         this.lastCardUseTimestamp = lastCardUseTimestamp;
@@ -33,11 +34,11 @@ public class User implements Serializable {
         this.lastCardUsePlace = lastCardUsePlace;
     }
 
-    public long getLastCardUseTimestamp() {
+    public Instant getLastCardUseTimestamp() {
         return lastCardUseTimestamp;
     }
 
-    public void setLastCardUseTimestamp(long lastCardUseTimestamp) {
+    public void setLastCardUseTimestamp(Instant lastCardUseTimestamp) {
         this.lastCardUseTimestamp = lastCardUseTimestamp;
     }
 }
