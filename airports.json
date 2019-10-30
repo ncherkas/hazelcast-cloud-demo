@@ -18,5 +18,9 @@
   {"code": "MAD", "description":  "Madrid", "latitude": 40.4839, "longitude": -3.5680},
   {"code": "MUC", "description":  "Munich", "latitude": 48.3537, "longitude": 11.7750},
   {"code": "STN", "description":  "London Stansted", "latitude": 51.8860, "longitude": 0.2389},
-  {"code": "ZRH", "description":  "Zurich", "latitude": 47.4582, "longitude": 8.5555}
+  {"code": "ZRH", "description":  "Zurich", "latitude": 47.4582, "longitude": 8.5555},
+  {"code": "LWO", "description":  "Lviv", "latitude": 49.8074, "longitude": 23.9536},
+  {"code": "KBP", "description":  "Kyiv", "latitude": 50.3426, "longitude": 30.8925},
+  {"code": "SAW", "description":  "Istanbul", "latitude": 40.8983, "longitude": 29.3091},
+  {"code": "NSW", "description":  "Sydney", "latitude": -33.9473, "longitude": 151.1794}
 ]
