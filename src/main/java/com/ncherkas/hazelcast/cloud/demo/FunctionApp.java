@@ -1,7 +1,5 @@
 package com.ncherkas.hazelcast.cloud.demo;
 
-import com.amazonaws.services.lambda.AWSLambdaClientBuilder;
-import com.amazonaws.services.lambda.invoke.LambdaInvokerFactory;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.hazelcast.client.HazelcastClient;
@@ -11,7 +9,6 @@ import com.hazelcast.client.spi.properties.ClientProperty;
 import com.hazelcast.config.GroupConfig;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.ncherkas.hazelcast.cloud.demo.function.KeepAliveService;
 import com.ncherkas.hazelcast.cloud.demo.model.Airport;
 import com.ncherkas.hazelcast.cloud.demo.model.User;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +20,11 @@ public class FunctionApp {
 
 	@Bean
 	public HazelcastInstance hazelcastClient(Properties props) {
+		/**
+		 * Configure heartbeat timeout:
+		 * 2019-10-23 07:29:17.726 WARN 1 --- [nt_0.internal-2] c.h.c.connection.nio.HeartbeatManager : hz.client_0 [CloudDemo] [3.11.1] Heartbeat failed over the connection: ClientConnection{alive=true, connectionId=1, channel=NioChannel{/169.254.76.1:53567->/54.149.166.126:31802}, remoteEndpoint=[100.112.128.77]:31802, lastReadTime=2019-10-23 07:25:57.222, lastWriteTime=2019-10-23 07:25:57.142, closedTime=never, connected server version=3.12.2}
+		 */
+
 		System.out.println("Using: " + props);
 		Properties.HazelcastCloud hazelcastCloudProps = props.getHazelcastCloud();
 		ClientConfig config = new ClientConfig();
@@ -46,13 +48,6 @@ public class FunctionApp {
 	@Bean
 	public AmazonS3 amazonS3() {
 		return AmazonS3ClientBuilder.defaultClient();
-	}
-
-	@Bean
-	public KeepAliveService keepAliveService() {
-		return LambdaInvokerFactory.builder()
-				.lambdaClient(AWSLambdaClientBuilder.defaultClient())
-				.build(KeepAliveService.class);
 	}
 
 	public static void main(String[] args) {

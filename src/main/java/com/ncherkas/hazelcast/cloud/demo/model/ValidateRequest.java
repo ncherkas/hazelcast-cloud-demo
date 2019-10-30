@@ -1,12 +1,14 @@
 package com.ncherkas.hazelcast.cloud.demo.model;
 
+import java.time.Instant;
+
 public class ValidateRequest extends Request {
 
     public static final String TYPE = "VALIDATE";
 
     private Integer userId;
     private String airportCode;
-    private long transactionTimestamp;
+    private Instant transactionTimestamp;
 
     public ValidateRequest() {
         super(TYPE);
@@ -28,11 +30,11 @@ public class ValidateRequest extends Request {
         this.airportCode = airportCode;
     }
 
-    public long getTransactionTimestamp() {
+    public Instant getTransactionTimestamp() {
         return transactionTimestamp;
     }
 
-    public void setTransactionTimestamp(long transactionTimestamp) {
+    public void setTransactionTimestamp(Instant transactionTimestamp) {
         this.transactionTimestamp = transactionTimestamp;
     }
 }
