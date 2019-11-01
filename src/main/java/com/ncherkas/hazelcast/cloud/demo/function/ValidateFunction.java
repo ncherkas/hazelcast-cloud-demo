@@ -10,8 +10,6 @@ import java.util.function.Function;
 @Component("validate")
 public class ValidateFunction implements Function<Request, Response> {
 
-    public static final String AWS_NAME = "CloudDemoValidateFn";
-
     private static final int RADIUS_OF_THE_EARTH_M = 6_371_000;
 
     private final IMap<Integer, User> usersMap;
