@@ -1,7 +1,5 @@
 package com.ncherkas.hazelcast.cloud.demo;
 
-import com.amazonaws.services.lambda.AWSLambdaClientBuilder;
-import com.amazonaws.services.lambda.invoke.LambdaInvokerFactory;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.hazelcast.client.HazelcastClient;
@@ -11,7 +9,6 @@ import com.hazelcast.client.spi.properties.ClientProperty;
 import com.hazelcast.config.GroupConfig;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
-import com.ncherkas.hazelcast.cloud.demo.function.KeepAliveService;
 import com.ncherkas.hazelcast.cloud.demo.model.Airport;
 import com.ncherkas.hazelcast.cloud.demo.model.User;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +25,7 @@ public class FunctionApp {
 		ClientConfig config = new ClientConfig();
 		config.setGroupConfig(new GroupConfig(hazelcastCloudProps.getClusterName(), hazelcastCloudProps.getClusterPassword()));
 		config.setProperty("hazelcast.client.statistics.enabled", "true");
+		config.setProperty("hazelcast.client.heartbeat.timeout", "300000");
 		config.setProperty(ClientProperty.HAZELCAST_CLOUD_DISCOVERY_TOKEN.getName(), hazelcastCloudProps.getDiscoveryToken());
 		config.setProperty(HazelcastCloudDiscovery.CLOUD_URL_BASE_PROPERTY.getName(), hazelcastCloudProps.getUrlBase());
 		return HazelcastClient.newHazelcastClient(config);
@@ -46,13 +44,6 @@ public class FunctionApp {
 	@Bean
 	public AmazonS3 amazonS3() {
 		return AmazonS3ClientBuilder.defaultClient();
-	}
-
-	@Bean
-	public KeepAliveService keepAliveService() {
-		return LambdaInvokerFactory.builder()
-				.lambdaClient(AWSLambdaClientBuilder.defaultClient())
-				.build(KeepAliveService.class);
 	}
 
 	public static void main(String[] args) {

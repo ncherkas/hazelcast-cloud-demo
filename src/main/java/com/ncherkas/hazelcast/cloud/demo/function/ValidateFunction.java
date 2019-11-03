@@ -4,12 +4,12 @@ import com.hazelcast.core.IMap;
 import com.ncherkas.hazelcast.cloud.demo.model.*;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 @Component("validate")
 public class ValidateFunction implements Function<Request, Response> {
 
-    private static final long ONE_MINUTE_MS = 60 * 1000L;
     private static final int RADIUS_OF_THE_EARTH_M = 6_371_000;
 
     private final IMap<Integer, User> usersMap;
@@ -48,7 +48,8 @@ public class ValidateFunction implements Function<Request, Response> {
         Airport nextAirport = airportsMap.get(validateRequest.getAirportCode());
 
         // Time
-        double minutes = (validateRequest.getTransactionTimestamp() - user.getLastCardUseTimestamp()) / ONE_MINUTE_MS;
+        double minutes =
+                Duration.between(user.getLastCardUseTimestamp(), validateRequest.getTransactionTimestamp()).toMinutes();
 
         // Distance
         double meters = haversine(nextAirport.getLatitude(), nextAirport.getLongitude(),
